@@ -45,7 +45,7 @@ myimage = dw.loadImage("cat.bmp")
 # coordinate given by the first component of the state tuple
 #
 def updateDisplay(state):
-    dw.fill(dw.black)
+    dw.fill(dw.blue)
     dw.draw(myimage, (state[0], state[2]))
 
 
@@ -88,13 +88,14 @@ def endState(state):
 def handleEvent(state, event):
     if event.type == pg.KEYDOWN:
         if event.key == pg.K_LEFT:
-            return((state[0],-state[1], state[2], state[3]))
+            return((state[0],state[1]-1, state[2], 0))
+            return dw.fill(dw.blue)
         if event.key == pg.K_RIGHT:
-            return((state[0],-state[1], state[2], state[3]))
+            return((state[0],state[1]+1, state[2], 0))
         if event.key == pg.K_UP:
-            return((state[0],state[1], state[2], -state[3]))
+            return((state[0],0, state[2], state[3]+1))
         if event.key == pg.K_DOWN:
-            return((state[0],state[1], state[2], -state[3]))
+            return((state[0],0, state[2], state[3]-1))
     else:
         return(state)
 
@@ -113,7 +114,7 @@ def handleEvent(state, event):
 # World state will be single x coordinate at left edge of world
 
 # The cat starts at the left, moving right
-initState = (250,1,250,1)
+initState = (200,1,200,0)
 
 # Run the simulation no faster than 60 frames per second
 frameRate = 25
