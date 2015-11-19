@@ -58,7 +58,7 @@ def updateDisplay(state):
 #
 # state -> state
 def updateState(state):
-    return(state[0]+state[1],state[1],state[2],state[3])
+    return(state[0]+state[1],state[1],state[2]-state[3],state[3])
 
 ################################################################
 
@@ -66,7 +66,7 @@ def updateState(state):
 # that is, when pos is less then zero or greater than the screen width
 # state -> bool
 def endState(state):
-    if (state[0] > width or state[0] < 0 or state[1] > height or state[1] < 0):
+    if (state[0] > width or state[0] < 0 or state[2] > height or state[2] < 0):
         return True
     else:
         return False
@@ -92,7 +92,7 @@ def handleEvent(state, event):
             newState = -1
         else:
             newState = 1   
-        return((state[0], state[1], state[2], state[3]))
+        return((state[0],-state[1], state[2], -state[3]))
     else:
         return(state)
 
