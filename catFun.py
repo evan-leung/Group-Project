@@ -15,7 +15,7 @@ import pygame as pg
 #
 # For example, the tuple (7,1) would represent the cat at x-coord,
 # 7, and moving to the right by 1 pixel per "clock tick."
-# 
+#
 # The initial state of the cat in this program is (0,1), meaning that the cat
 # starts at the left of the screen and moves right one pixel per tick.
 #
@@ -85,26 +85,38 @@ def endState(state):
 #
 # state -> event -> state
 #
-def handleEvent(state, event):  
-#    print("Handling event: " + str(event)) .
-    if (event.type == pg.MOUSEBUTTONDOWN):
-        if (state[1]) == 1:
-            newState = -1
-        else:
-            newState = 1   
-        return((state[0],-state[1], state[2], -state[3]))
+def handleEvent(state, event):
+    if event.type == pg.KEYDOWN:
+        if event.key == pg.K_LEFT:
+            return((state[0],-state[1], state[2], state[3]))
+        if event.key == pg.K_RIGHT:
+            return((state[0],-state[1], state[2], state[3]))
+        if event.key == pg.K_UP:
+            return((state[0],state[1], state[2], -state[3]))
+        if event.key == pg.K_DOWN:
+            return((state[0],state[1], state[2], -state[3]))
     else:
         return(state)
+
+#    print("Handling event: " + str(event)) .
+#    if (event.type == pg.K):
+#        if (state[1]) == 1:
+#            newState = -1
+#        else:
+#            newState = 1
+#        return((state[0],-state[1], state[2], -state[3]))
+#    else:
+#        return(state)
 
 ################################################################
 
 # World state will be single x coordinate at left edge of world
 
-# The cat starts at the left, moving right 
+# The cat starts at the left, moving right
 initState = (250,1,250,1)
 
 # Run the simulation no faster than 60 frames per second
-frameRate = 3
+frameRate = 25
 
 # Run the simulation!
 rw.runWorld(initState, updateDisplay, updateState, handleEvent,
