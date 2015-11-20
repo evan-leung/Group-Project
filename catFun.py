@@ -49,7 +49,9 @@ def updateDisplay(state):
     dw.fill(dw.blue)
     dw.draw(myimage, (state[0], state[2]))
     dw.draw(myimage2, (state[0], state[2]-50))
-    dw.draw(dw.makeLabel("Accelerate ME!: ", "Helvetica", 50, dw.black), (12, 12))
+    dw.draw(dw.makeLabel("SPEED: "+ str(counter), "Helvetica", 50, dw.black), (12, 12))
+    dw.draw(dw.makeLabel("Try to reach max speed!", "Helvetica", 50, dw.black), (50, 50))
+    
 
 ################################################################
 
@@ -88,9 +90,12 @@ def endState(state):
 #
 # state -> event -> state
 #
-
+counter = 0
+score = 0
 def handleEvent(state, event):
-    counter = 1
+    global counter
+    global score
+    score = score + 0.5
     if event.type == pg.KEYDOWN:
         counter = counter + 1
         if event.key == pg.K_LEFT:
