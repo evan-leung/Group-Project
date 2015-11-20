@@ -49,7 +49,7 @@ def updateDisplay(state):
     dw.fill(dw.blue)
     dw.draw(myimage, (state[0], state[2]))
     dw.draw(myimage2, (state[0]-50, state[2]-200))
-
+    dw.draw(dw.makeLabel("Accelerate ME!: ", "Helvetica", 50, dw.black), (12, 12))
 
 ################################################################
 
@@ -107,6 +107,7 @@ def handleEvent(state, event):
             return((state[0],0, state[2], state[3]-counter))
     else:
         return(state)
+
 
 #    print("Handling event: " + str(event)) .
 #    if (event.type == pg.K):
