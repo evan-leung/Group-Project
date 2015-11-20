@@ -31,8 +31,8 @@ import pygame as pg
 
 # Initialize world
 name = "Cat Fun. Press the mouse (but not too fast)!"
-width = 500
-height = 500
+width = 1000
+height = 1000
 rw.newDisplay(width, height, name)
 
 ################################################################
@@ -48,7 +48,7 @@ myimage2 = dw.loadImage("hat.bmp")
 def updateDisplay(state):
     dw.fill(dw.blue)
     dw.draw(myimage, (state[0], state[2]))
-    dw.draw(myimage2, (state[0]-50, state[2]-200))
+    dw.draw(myimage2, (state[0], state[2]-50))
     dw.draw(dw.makeLabel("Accelerate ME!: ", "Helvetica", 50, dw.black), (12, 12))
 
 ################################################################
@@ -124,10 +124,10 @@ def handleEvent(state, event):
 # World state will be single x coordinate at left edge of world
 
 # The cat starts at the left, moving right
-initState = (200,1,200,0)
+initState = (500,1,500,0)
 
 # Run the simulation no faster than 60 frames per second
-frameRate = 25
+frameRate = 45
 
 # Run the simulation!
 rw.runWorld(initState, updateDisplay, updateState, handleEvent,
