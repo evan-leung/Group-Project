@@ -39,6 +39,7 @@ rw.newDisplay(width, height, name)
 
 # Display the state by drawing a cat at that x coordinate
 myimage = dw.loadImage("cat.bmp")
+myimage2 = dw.loadImage("hat.bmp")
 
 # state -> image (IO)
 # draw the cat halfway up the screen (height/2) and at the x
@@ -47,6 +48,7 @@ myimage = dw.loadImage("cat.bmp")
 def updateDisplay(state):
     dw.fill(dw.blue)
     dw.draw(myimage, (state[0], state[2]))
+    dw.draw(myimage2, (state[0]-50, state[2]-200))
 
 
 ################################################################
@@ -59,6 +61,7 @@ def updateDisplay(state):
 # state -> state
 def updateState(state):
     return(state[0]+state[1],state[1],state[2]-state[3],state[3])
+
 
 ################################################################
 
@@ -85,17 +88,23 @@ def endState(state):
 #
 # state -> event -> state
 #
+
 def handleEvent(state, event):
+    counter = 1
     if event.type == pg.KEYDOWN:
+        counter = counter + 1
         if event.key == pg.K_LEFT:
-            return((state[0],state[1]-1, state[2], 0))
-            return dw.fill(dw.blue)
+            counter = counter + 1
+            return((state[0],state[1]-counter, state[2], 0))
         if event.key == pg.K_RIGHT:
-            return((state[0],state[1]+1, state[2], 0))
+            counter = counter + 1
+            return((state[0],state[1]+counter, state[2], 0))
         if event.key == pg.K_UP:
-            return((state[0],0, state[2], state[3]+1))
+            counter = counter + 1
+            return((state[0],0, state[2], state[3]+counter))
         if event.key == pg.K_DOWN:
-            return((state[0],0, state[2], state[3]-1))
+            counter = counter + 1
+            return((state[0],0, state[2], state[3]-counter))
     else:
         return(state)
 
