@@ -47,8 +47,8 @@ myimage2 = dw.loadImage("hat.bmp")
 #
 def updateDisplay(state):
     dw.fill(dw.blue)
-    dw.draw(myimage, (state[0], state[2]))
-    dw.draw(myimage2, (state[0], state[2]-50))
+    dw.draw(myimage, (state.x, state.y))
+    dw.draw(myimage2, (state.x, state.y-50))
     dw.draw(dw.makeLabel("SPEED: "+ str(counter), "Helvetica", 50, dw.black), (12, 12))
     dw.draw(dw.makeLabel("Try to reach max speed!", "Helvetica", 50, dw.black), (50, 50))
     
@@ -56,13 +56,17 @@ def updateDisplay(state):
 ################################################################
 
 # Change pos by delta-pos, leaving delta-pos unchanged
-# Note that pos is accessed as state[0], and delta-pos
-# as state[1]. Later on we'll see how to access state
+# Note that pos is accessed as state.x, and delta-pos
+# as state.xvel. Later on we'll see how to access state
 # components by name (as we saw with records in Idris).
 #
 # state -> state
 def updateState(state):
-    return(state[0]+state[1],state[1],state[2]-state[3],state[3])
+    # Make changes to `state`
+    state.x = state.x + state.xvel
+    state.y = state.y - state.yvel
+    return state
+   # return(state.x+state.xvel,state.xvel,state.y-state.yvel,state.yvel)
 
 
 ################################################################
@@ -71,7 +75,7 @@ def updateState(state):
 # that is, when pos is less then zero or greater than the screen width
 # state -> bool
 def endState(state):
-    if (state[0] > width or state[0] < 0 or state[2] > height or state[2] < 0):
+    if (state.x > width or state.x < 0 or state.y > height or state.y < 0):
         return True
     else:
         return False
@@ -100,27 +104,48 @@ def handleEvent(state, event):
         counter = counter + 1
         if event.key == pg.K_LEFT:
             counter = counter + 1
-            return((state[0],state[1]-counter, state[2], 0))
+            state.x = state.x
+            state.xvel = state.xvel - counter
+            state.y = state.y
+            state.yvel = 0
+            return state
+            #return((state.x,state.xvel-counter, state.y, 0))
         if event.key == pg.K_RIGHT:
             counter = counter + 1
-            return((state[0],state[1]+counter, state[2], 0))
+            state.x = state.x
+            state.xvel = state.xvel + counter
+            state.y = state.y
+            state.yvel = 0
+            return state            
+           # return((state.x,state.xvel+counter, state.y, 0))
         if event.key == pg.K_UP:
             counter = counter + 1
-            return((state[0],0, state[2], state[3]+counter))
+            state.x = state.x
+            state.xvel = 0
+            state.y = state.y
+            state.yvel = state.yvel + counter
+            return state
+           # return((state.x,0, state.y, state.yvel+counter))
         if event.key == pg.K_DOWN:
             counter = counter + 1
-            return((state[0],0, state[2], state[3]-counter))
+            state.x = state.x
+            state.xvel = 0
+            state.y = state.y
+            state.yvel = state.yvel - counter
+            return state
+            
+           # return((state.x,0, state.y, state.yvel-counter))
     else:
         return(state)
 
 
 #    print("Handling event: " + str(event)) .
 #    if (event.type == pg.K):
-#        if (state[1]) == 1:
+#        if (state.xvel) == 1:
 #            newState = -1
 #        else:
 #            newState = 1
-#        return((state[0],-state[1], state[2], -state[3]))
+#        return((state.x,-state.xvel, state.y, -state.yvel))
 #    else:
 #        return(state)
 
@@ -129,11 +154,22 @@ def handleEvent(state, event):
 # World state will be single x coordinate at left edge of world
 
 # The cat starts at the left, moving right
-initState = (500,1,500,0)
+#initState = (500,1,500,0)
 
 # Run the simulation no faster than 60 frames per second
 frameRate = 45
 
 # Run the simulation!
-rw.runWorld(initState, updateDisplay, updateState, handleEvent,
+
+
+class State:
+    def __init__(self, x, xvel, y, yvel):
+        self.x = x
+        self.xvel = xvel
+        self.y = y
+        self.yvel = yvel
+
+myState = State(500, 1, 500, 0)
+
+rw.runWorld(myState, updateDisplay, updateState, handleEvent,
             endState, frameRate)
